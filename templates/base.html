@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      {% block title %}
+        Partition Musique
+      {% endblock %}
+    </title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <nav>
+      <a href="#">🎵 Partition Musique</a>
+
+      <div>
+        {% if user.is_authenticated %}
+          <span>Bonjour, {{ user.username }}</span>
+        {% else %}
+          <a href="#">Connexion</a>
+          <a href="#">Inscription</a>
+        {% endif %}
+      </div>
+    </nav>
+    <main>
+      {% block content %}
+      {% endblock %}
+    </main>
+    <footer>projet dev axel vic elyes</footer>
+  </body>
+</html>
