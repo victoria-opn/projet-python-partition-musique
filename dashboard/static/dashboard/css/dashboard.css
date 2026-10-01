@@ -1,0 +1,7 @@
+.dashboard {font-family: system-ui, sans-serif; max-width: 1100px; margin: 2rem auto; padding: 1.5rem; background: white; border-radius: 12px; overflow-x: auto; color: #203047;}
+.dashboard table {width: 100%; border-collapse: collapse; margin: 1rem 0;}
+.dashboard td, .dashboard th {text-align: left; padding: .7rem; border-bottom: 1px solid #ccd5df; overflow-wrap: anywhere;}
+.dashboard dl {display: grid; grid-template-columns: 1fr 1fr; gap: .6rem;}
+.dashboard dd {font-weight: bold;}
+.dashboard button, .dashboard input, .dashboard select {font: inherit; padding: .4rem; margin: .25rem;}
+.dashboard a {color: #264c89;}

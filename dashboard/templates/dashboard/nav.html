@@ -1,0 +1,2 @@
+<p><a href="{% url 'dashboard:home' %}">Vue d’ensemble</a> · <a href="{% url 'dashboard:jobs' %}">Jobs</a> · <a href="{% url 'dashboard:users' %}">Utilisateurs</a> · <a href="/admin/">Admin Django</a></p>
+{% for message in messages %}<p role="status">{{ message }}</p>{% endfor %}

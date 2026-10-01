@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Gestion des jobs{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'dashboard/css/dashboard.css' %}">
+<section class="dashboard"><h1>Gestion des jobs</h1>{% include "dashboard/nav.html" %}
+{% if not p2_disponible %}<p>Le modèle Job sera fourni par P2.</p>{% endif %}
+<form method="get"><label>Statut <select name="status"><option value="">Tous</option><option>PENDING</option><option>PROCESSING</option><option>COMPLETED</option><option>FAILED</option></select></label>
+<label>Utilisateur <input name="user" value="{{ request.GET.user }}"></label><label>Date <input type="date" name="date" value="{{ request.GET.date }}"></label><button>Filtrer</button></form>
+<table><thead><tr><th>Utilisateur / Job</th><th>Statut</th><th>Erreur</th><th>Actions</th></tr></thead><tbody>
+{% for job in page %}<tr><td>{{ job.user.username }}<br>{{ job.pk }}<br>{{ job.date_creation }}</td><td>{{ job.status }} ({{ job.progress }} %)</td><td>{{ job.message_erreur }}</td><td>
+{% if job.status == 'FAILED' %}<form method="post" action="{% url 'dashboard:retry_job' job.pk %}">{% csrf_token %}<button>Relancer</button></form>{% endif %}
+{% if job.status == 'COMPLETED' or job.status == 'FAILED' %}<form method="post" action="{% url 'dashboard:delete_job' job.pk %}">{% csrf_token %}<label><input type="checkbox" required> Confirmer la suppression du job et de ses fichiers</label><button>Supprimer</button></form>{% endif %}
+</td></tr>{% empty %}<tr><td colspan="4">Aucun job</td></tr>{% endfor %}</tbody></table>
+{% include "dashboard/pagination.html" %}</section>
+{% endblock %}
