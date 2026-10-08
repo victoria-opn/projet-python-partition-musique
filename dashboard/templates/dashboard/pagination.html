@@ -1,1 +1,0 @@
-<p>{% if page.has_previous %}<a href="{% querystring page=page.previous_page_number %}">Précédent</a>{% endif %} Page {{ page.number }} / {{ page.paginator.num_pages }} {% if page.has_next %}<a href="{% querystring page=page.next_page_number %}">Suivant</a>{% endif %}</p>

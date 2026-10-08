@@ -2,9 +2,3 @@ asgiref==3.12.1
 Django==6.1.1
 sqlparse==0.6.0
 tzdata==2026.4
-
-numpy>=2.2,<3
-scipy>=1.15,<2
-channels>=4.3,<5
-daphne>=4.2,<5
-channels-redis>=4.3,<5
