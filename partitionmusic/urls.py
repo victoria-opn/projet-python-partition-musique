@@ -17,7 +17,9 @@ Including another URLconf
 from django.urls import path
 from . import views
 
-app_name = "partitions"
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path("comptes/", include("comptes.urls")),
 
 urlpatterns = [
     path("", views.home, name="home"),
