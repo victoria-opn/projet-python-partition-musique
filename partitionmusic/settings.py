@@ -39,8 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'comptes',
     'dashboard',
+    'partitions',
 ]
 
 MIDDLEWARE = [
@@ -136,3 +138,13 @@ ASGI_APPLICATION = 'partitionmusic.asgi.application'
 REDIS_URL = os.environ.get('REDIS_URL', 'redis://127.0.0.1:6379/0')
 CHANNEL_LAYERS = {'default': {'BACKEND': 'channels_redis.core.RedisChannelLayer', 'CONFIG': {'hosts': [REDIS_URL]}}}
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,[::1]').split(',')
+
+
+# P2 : partitions, Celery et fichiers
+CELERY_BROKER_URL = REDIS_URL
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# Temporaire, en attendant la vraie page de connexion de P1
+LOGIN_URL = '/admin/login/'
