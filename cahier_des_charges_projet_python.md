@@ -236,7 +236,7 @@ Si le MVP est validé dans les temps :
 * tests sur plusieurs navigateurs et plusieurs fichiers audio ;
 * tests de bout en bout et corrections finales.
 
-### 6.6 Récapitulatif
+### 6.5 Récapitulatif
 
 | Niveau | Contenu principal | Statut à la soutenance |
 |---|---|---|
