@@ -22,7 +22,7 @@ L'objectif principal est de développer une application web permettant à un uti
 
 L'utilisateur devra pouvoir :
 
-* Déposer un fichier audio sur l'application ou enregistrer directement un son depuis son microphone ;
+* Déposer un fichier audio sur l'application ;
 * Sélectionner la tonalité dans laquelle il souhaite transposer le morceau ;
 * Lancer la génération de la partition ;
 * Etre informé de l'avancement du traitement ;
