@@ -1,0 +1,51 @@
+services:
+  db:
+    image: postgre-17
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: password #A cahnger (juste pour l'exemple)
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+    test: ["CMD-SHELL", "pg_isready -U app"]
+    interval: 5s
+  web:
+    image: ghcr.io/mon_login/appli:latest #Pour l'exemple puis mettre le bon URI pour le registre
+    environment:
+      DATABASE_HOST: db
+      DB_PASSWORD: password
+    ports:
+      - "8080:80"
+    volumes:
+      - ./site:/usr/share/almalinux/html:ro  #read only
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - >-
+          import urllib.request as u;
+          u.urlopen("http://localhost:8000/health/")
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+  proxy:
+    image: caddy:2-alpine
+    ports: ["8080:80"]  #le seul port ouvert
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - static:/static:ro
+      - media:/media:ro
+    depends_on:
+      web:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+  static:
+  media:
