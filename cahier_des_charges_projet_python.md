@@ -118,7 +118,72 @@ Machine virtuelle personnelle : tous les services (site, base de données, stock
 
 ---
 
-## 4. Délai
+## 4. Budget prévisionnel
+
+L'équipe projet est composée de :
+* un développeur spécialisé dans le traitement audio et la génération de partitions ;
+* un développeur frontend chargé de l'interface et de l'expérience utilisateur ;
+* un développeur backend chargé de l'API, du réseau et du système de notification.
+
+Pour cette simulation, le coût journalier moyen d'un développeur junior est estimé à **300 € par jour**.
+
+Le projet est estimé à environ **10 jours de travail par personne**, soit :
+
+| Ressource                     | Nombre de jours | Coût journalier |  Coût total |
+| ----------------------------- | --------------: | --------------: | ----------: |
+| Développeur traitement audio  |        10 jours |           300 € |     3 000 € |
+| Développeur frontend          |        10 jours |           300 € |     3 000 € |
+| Développeur backend / réseau  |        10 jours |           300 € |     3 000 € |
+| **Total ressources humaines** |    **30 jours** |                 | **9 000 €** |
+
+---
+
+L'application nécessite un serveur permettant d'héberger le site Django, de recevoir les fichiers audio, d'exécuter les traitements Python, de stocker les fichiers générés et de gérer les connexions WebSocket.
+
+L'application est hébergée sur une machine virtuelle personnelle, déjà disponible : tous les services (site, base de données, stockage des fichiers) y tournent dans des conteneurs Docker. L'hébergement n'entre donc pas dans le budget.
+
+---
+
+Afin de simuler une mise en production réelle, un nom de domaine peut être acheté pour rendre l'application accessible avec une adresse dédiée.
+
+Le certificat HTTPS pourra être obtenu gratuitement avec Let's Encrypt, que le reverse proxy Caddy gère automatiquement.
+
+| Ressource        | Coût estimé |
+| ---------------- | ----------: |
+| Nom de domaine   |        20 € |
+| Certificat HTTPS |         0 € |
+| **Total**        |    **20 €** |
+
+---
+
+Une partie du budget est réservée aux phases de tests, de correction des anomalies et de mise en production.
+
+Cette phase comprend notamment les tests fonctionnels, les tests de communication réseau, les tests du système de notification, les tests sur plusieurs navigateurs, les tests de l'enregistrement microphone, la correction des bugs, la configuration finale du serveur.
+
+Une enveloppe de **600 €** est prévue pour cette phase.
+
+---
+
+Une marge d'environ **10 %** est ajoutée afin d'anticiper d'éventuels coûts supplémentaires. Cette marge est estimée à environ **1 000 €**.
+
+---
+
+| Bilan budgétaire              |      Montant |
+| ----------------------------- | -----------: |
+| Ressources humaines           |      9 000 € |
+| Nom de domaine et sécurité    |         20 € |
+| Logiciels et licences         |          0 € |
+| Tests et mise en production   |        600 € |
+| Marge pour imprévus           |      1 000 € |
+| **TOTAL PRÉVISIONNEL**        | **10 620 €** |
+
+L'enveloppe budgétaire globale du projet est donc estimée à environ :
+
+# **10 600 €**
+
+---
+
+## 5. Délai
 
 Date de fin du projet : 09/12 (soutenance)
 
@@ -128,11 +193,11 @@ Date de fin du projet : 09/12 (soutenance)
 | Axel | Création des maquettes du site, choix du design et définition du parcours utilisateur | Création des templates Django et développement de la page d'accueil | Développement de l'import audio et du drag and drop | Ajout du lecteur audio et du sélecteur de tonalité | Développement de l'enregistrement audio depuis le microphone | Connexion du frontend au backend pour l'envoi de l'audio et de la tonalité | Création de l'écran de traitement et affichage des différents statuts | Connexion au WebSocket et mise en place des notifications visuelles | Développement de la page résultat avec affichage et téléchargement de la partition | Responsive design, amélioration graphique et gestion des erreurs utilisateur | Travail sur le PowerPoint de soutenance | Tests finaux frontend et corrections | Préparation de la démonstration | Soutenance |
 | Elyes | Définition de l'architecture backend et des échanges entre frontend, backend et moteur | Choix de Django (pile recommandée par le cours) et prise en main avec le tutoriel officiel | Création du dépôt Git, du projet Django et du guide d'équipe | Création de l'application comptes et du gabarit commun des pages | Prise en compte des consignes du module (Docker, PostgreSQL, aucune IA pour le code) et réorganisation | Comptes : inscription, connexion, déconnexion, contrôle d'accès | Modèle des traitements, upload et stockage des fichiers, traitement asynchrone avec Celery | Mise en place du WebSocket (Channels) pour suivre l'état du traitement, notifications et reconnexion réseau | Intégration du backend avec le moteur audio de Victoria | Gestion des erreurs, pages 404/500, compte admin par défaut, intégration continue | Travail sur le PowerPoint de soutenance | Tests de bout en bout | Validation finale du backend | Soutenance |
 
-## 5. MVP et paliers de livraison
+## 6. MVP et paliers de livraison
 
 Compte tenu du délai et de la date de soutenance (09/12), le projet est organisé autour d'un **MVP (Minimum Viable Product)**, présenté au minimum lors de la soutenance, puis de **paliers successifs** que l'équipe présentera selon le temps disponible. Comme indiqué en section 2, la fiabilité du fonctionnement général du site est prioritaire sur la qualité de la transcription musicale.
 
-### 5.1 MVP (livrable minimum pour la soutenance)
+### 6.1 MVP (livrable minimum pour la soutenance)
 
 Le MVP doit permettre de réaliser le parcours complet de bout en bout, de façon fiable :
 
@@ -150,7 +215,7 @@ Le MVP doit permettre de réaliser le parcours complet de bout en bout, de faço
 
 La transcription peut comporter des imprécisions, ce qui est acceptable pour le MVP (étant donné que plusieurs méthodes de calcul ont déjà été effectué et aucune solution exacte n'a pour l'instant été trouvé : La partition est pour l'instant correcte).
 
-### 5.2 Palier 1 : communication réseau et confort d'utilisation
+### 6.2 Palier 1 : communication réseau et confort d'utilisation
 
 Si le MVP est validé dans les temps :
 
@@ -160,20 +225,20 @@ Si le MVP est validé dans les temps :
 * lecteur audio pour écouter le fichier avant envoi.
 * publication de l'image sur un registre (GHCR) pour que chaque intervenant puisse l'exécuter sans problème de build ;
 
-### 5.3 Palier 2 : fonctionnalités avancées
+### 6.3 Palier 2 : fonctionnalités avancées
 
 * enregistrement direct depuis le microphone ;
 * détection des rythmes pour une partition plus fidèle ;
 * gestion de la reconnexion réseau et des cas limites ;
 * interface responsive et amélioration graphique.
 
-### 5.4 Palier 3 : consolidation
+### 6.4 Palier 3 : consolidation
 
 * amélioration de la précision de la détection des notes (filtrage du bruit, stabilité) ;
 * tests sur plusieurs navigateurs et plusieurs fichiers audio ;
 * tests de bout en bout et corrections finales.
 
-### 5.5 Récapitulatif
+### 6.5 Récapitulatif
 
 | Niveau | Contenu principal | Statut à la soutenance |
 |---|---|---|
