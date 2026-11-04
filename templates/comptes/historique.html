@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Historique — Partition Musique{% endblock %}
+
+{% block content %}
+  <section class="card">
+    <h1>Historique des dépôts</h1>
+    <p>Retrouvez les fichiers audio que vous avez déposés.</p>
+    {% if depots %}
+      <ul class="history-list">
+        {% for depot in depots %}
+          <li>
+            <a href="{% url 'resultat-detail' depot.id %}">
+              <strong>{{ depot.nom_fichier }}</strong>
+              <span>Déposé le {{ depot.date_depot|date:"d/m/Y à H:i" }}</span>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>Vous n’avez encore déposé aucun fichier audio.</p>
+    {% endif %}
+  </section>
+{% endblock %}

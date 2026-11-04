@@ -4,23 +4,29 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>
-      {% block title %}
-        Partition Musique
-      {% endblock %}
-    </title>
+    <title>{% block title %}Partition Musique{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
   </head>
   <body>
-    <nav>
-      <a href="#">🎵 Partition Musique</a>
-
-      <div>
+    <nav class="site-nav">
+      <a class="brand" href="{% url 'accueil' %}">Partition Musique</a>
+      <div class="nav-actions">
+        {% if user.is_authenticated %}
+          <div class="nav-links">
+            <a class="nav-button" href="{% url 'accueil' %}">Accueil</a>
+            <a class="nav-button" href="{% url 'historique' %}">Historique</a>
+          </div>
+        {% endif %}
+      </div>
+      <div class="nav-user">
         {% if user.is_authenticated %}
           <span>Bonjour, {{ user.username }}</span>
+          <form method="post" action="{% url 'deconnexion' %}">
+            {% csrf_token %}
+            <button class="link-button" type="submit">Déconnexion</button>
+          </form>
         {% else %}
-          <a href="#">Connexion</a>
-          <a href="#">Inscription</a>
+          <a href="{% url 'connexion' %}">Connexion</a>
         {% endif %}
       </div>
     </nav>
@@ -28,6 +34,5 @@
       {% block content %}
       {% endblock %}
     </main>
-    <footer>projet dev axel vic elyes</footer>
   </body>
 </html>

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Accueil — Partition Musique{% endblock %}
+
+{% block content %}
+  <section class="welcome-card">
+    <p class="eyebrow">Projet Partition de musique</p>
+    <h1>Bienvenue !</h1>
+    <p>
+      À terme, vous pourrez transformer vos fichiers audio en partitions
+      et les télécharger. En attendant, vous pouvez découvrir la page de
+      résultat de démonstration en déposant un fichier.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>Essayez le dépôt audio</h2>
+    <p>Choisissez un fichier audio pour afficher le résultat de démonstration.</p>
+    <form method="post" action="{% url 'resultat' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <label for="{{ form.audio.id_for_label }}">{{ form.audio.label }}</label>
+      {{ form.audio }}
+      {% if form.audio.help_text %}<small>{{ form.audio.help_text }}</small>{% endif %}
+      {{ form.audio.errors }}
+      <button type="submit">Déposer le fichier</button>
+    </form>
+  </section>
+{% endblock %}

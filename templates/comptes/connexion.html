@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Connexion — Partition Musique{% endblock %}
+
+{% block content %}
+  <section class="card narrow">
+    <h1>Connexion</h1>
+    {% if form.errors %}
+      <p class="error">Nom d’utilisateur ou mot de passe incorrect.</p>
+    {% endif %}
+    <form method="post">
+      {% csrf_token %}
+      <label for="{{ form.username.id_for_label }}">Nom d’utilisateur</label>
+      {{ form.username }}
+      <label for="{{ form.password.id_for_label }}">Mot de passe</label>
+      {{ form.password }}
+      <input type="hidden" name="next" value="{{ next }}">
+      <button type="submit">Se connecter</button>
+    </form>
+  </section>
+{% endblock %}
