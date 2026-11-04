@@ -23,23 +23,29 @@ python -m venv venv
 source venv/bin/activate        # Windows : venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 python manage.py migrate
+python manage.py shell -c "from django.contrib.auth import get_user_model; get_user_model().objects.create_user('user', password='musique-demo-2026')"
 python manage.py runserver
 ```
 
+Compte de démonstration local : `user` / `musique-demo-2026`. Ne pas réutiliser ce mot de passe ailleurs.
+La page de connexion est disponible sur `/connexion/` ; après connexion, le formulaire de dépôt s’affiche à l’accueil.
+
 ## Comptes par défaut
 
-`admin` / `projetinfo1A` (créé automatiquement sur toute nouvelle base — en cours).
+Crée un compte local avec la commande ci-dessus ; aucun compte n'est préconfiguré dans une nouvelle base.
 
 ## Roadmap
 
 - [x] Projet Django initialisé, gabarit commun des pages
 - [x] Moteur : analyse audio, détection des notes, transposition, génération LilyPond (`partie_technique/`)
 - [x] Cahier des charges
-- [ ] Comptes : inscription, connexion, déconnexion
-- [ ] Dépôt d'un fichier audio et choix de la tonalité
+- [x] Connexion et déconnexion (les comptes sont créés via l'admin)
+- [x] Dépôt d'un fichier audio et page de résultat de démonstration
+- [x] Historique personnel des dépôts avec PDF de démonstration téléchargeable
+- [ ] Inscription et choix de la tonalité
 - [ ] Génération en tâche de fond (Celery) et intégration du moteur
 - [ ] Suivi du traitement en temps réel (WebSocket)
-- [ ] Page de résultat et téléchargement du PDF
+- [ ] Transcription réelle et téléchargement du PDF généré
 - [ ] Docker complet (PostgreSQL, Caddy, healthcheck, port 8080)
 - [ ] Pages d'erreur 404 et 500, compte admin automatique
 - [ ] Intégration continue (GitHub Actions)
