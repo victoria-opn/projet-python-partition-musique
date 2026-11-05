@@ -1,3 +1,4 @@
+from pathlib import Path
 import subprocess
 
 from parametres import (
@@ -50,8 +51,6 @@ bemols_equivalents_dieses = {
     "ais": "bes",  # la♯ = si♭
     "bis": "c",    # si♯ = do
 }
-
-
 
 def transformer_en_bemols(info_notes_b):
     notes_converties = []
@@ -139,6 +138,7 @@ def determiner_tonalite(alterations):
             return tonalites_majeures_bemol[len(alterations)]
 
 
+#### Fonctionne pas je pense
 
 def decouper_en_mesures(notes, temps_forts):
     # Récupère les débuts des mesures depuis les temps forts
@@ -417,4 +417,5 @@ def ecrire_lilypond(code_lilypond):
 
 
 def compiler_lilypond():
-    subprocess.run(["lilypond", nom_fichier])
+    subprocess.run(["lilypond", nom_fichier], check=True)
+    return str(Path(nom_fichier).with_suffix(".pdf"))
