@@ -44,8 +44,24 @@ Je dois renvoyer le chemin du PDF à Elyes (backend).
 
 Retour en arrière pour enlever quelques modif faites par l'IA car sinon on a 0.
 Pas eu le temps de push car travaillé en local, pas dans le repo
+Mais on obtient une partition
 
 ## 15/10
 
 Mettre ce que j'ai fait la semaine dernière dans le git
 Maj les modif sur le git
+Partition pas conforme
+Armure ok
+On retrouve à peu près la mélodie mais rythmes et mesure pas correctes
+
+## 04/11
+
+Fréquence d'echantillonnage pas assez petite, donc perte de notes
+J'essaye de comprendre comment améliorer la détection des rythmes
+
+
+## 05/10
+
+Voir avec Elyes comment relier au backend ma fonction générer_partition, et comment recevoir le chemin audio et la tonalité.
+
+De mon côté, le backend appel main_recup_notes(chemin_audio, tonalite) et recoit le chemin du PDF à renvoyer. 
