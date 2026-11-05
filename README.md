@@ -47,7 +47,8 @@ Crée un compte local avec la commande ci-dessus ; aucun compte n'est préconfig
 - [ ] Suivi du traitement en temps réel (WebSocket)
 - [ ] Transcription réelle et téléchargement du PDF généré
 - [ ] Docker complet (PostgreSQL, Caddy, healthcheck, port 8080)
-- [ ] Pages d'erreur 404 et 500, compte admin automatique
+- [x] Pages d'erreur 404 et 500 personnalisées
+- [ ] Compte admin automatique
 - [ ] Intégration continue (GitHub Actions)
 
 ## Modèle de données

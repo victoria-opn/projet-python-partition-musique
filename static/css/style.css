@@ -85,6 +85,36 @@ main {
   border-radius: 10px;
 }
 
+.error-page {
+  max-width: 580px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.error-page .eyebrow {
+  margin-bottom: 0;
+}
+
+.error-code {
+  margin: 0.25rem 0;
+  color: #315a46;
+  font-size: clamp(5rem, 22vw, 8rem);
+  font-weight: bold;
+  line-height: 1;
+  letter-spacing: 0.04em;
+}
+
+.error-page h1 {
+  margin-bottom: 0.75rem;
+  font-size: clamp(1.5rem, 5vw, 2rem);
+}
+
+.error-page > p:not(.eyebrow, .error-code) {
+  margin: 0 auto 1.5rem;
+  color: #555;
+  line-height: 1.6;
+}
+
 .welcome-card {
   margin-bottom: 1.25rem;
   padding: 2rem;
