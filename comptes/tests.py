@@ -1,12 +1,27 @@
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import TestCase
+from django.test import RequestFactory, TestCase
 from django.urls import reverse
+from django.views.defaults import server_error
 
 from .models import DepotAudio
 
 
 class PagesTests(TestCase):
+    def test_page_404_personnalisee(self):
+        with self.settings(DEBUG=False):
+            response = self.client.get("/page-introuvable/")
+
+        self.assertContains(response, "Cette page n’existe pas", status_code=404)
+        self.assertContains(response, "404", status_code=404)
+
+    def test_page_500_personnalisee(self):
+        response = server_error(RequestFactory().get("/"))
+
+        self.assertEqual(response.status_code, 500)
+        self.assertContains(response, "Le serveur a rencontré un problème", status_code=500)
+        self.assertContains(response, "500", status_code=500)
+
     def test_accueil_affiche_formulaire_de_depot(self):
         utilisateur = User.objects.create_user(username="musicien", password="test-password-123")
         self.client.force_login(utilisateur)

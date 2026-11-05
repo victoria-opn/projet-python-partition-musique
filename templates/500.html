@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Erreur serveur — Partition Musique{% endblock %}
+
+{% block content %}
+  <section class="card error-page" aria-labelledby="error-title">
+    <p class="eyebrow">Une fausse note</p>
+    <p class="error-code" aria-hidden="true">500</p>
+    <h1 id="error-title">Le serveur a rencontré un problème</h1>
+    <p>
+      La partition n’a pas pu être jouée cette fois-ci. Réessayez dans un
+      instant ou retournez à l’accueil.
+    </p>
+    <a class="button-link" href="{% url 'accueil' %}">Retour à l’accueil</a>
+  </section>
+{% endblock %}
