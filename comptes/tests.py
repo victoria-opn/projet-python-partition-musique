@@ -1,4 +1,9 @@
+import os
+from unittest.mock import patch
+
 from django.contrib.auth.models import User
+from django.core.management import call_command
+from django.core.management.base import CommandError
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
@@ -135,3 +140,50 @@ class PagesTests(TestCase):
 
         self.assertRedirects(response, reverse("connexion"))
         self.assertNotIn("_auth_user_id", self.client.session)
+
+
+class DefaultSuperuserCommandTests(TestCase):
+    @patch.dict(
+        os.environ,
+        {
+            "DJANGO_SUPERUSER_USERNAME": "admin",
+            "DJANGO_SUPERUSER_PASSWORD": "secure-test-password",
+        },
+    )
+    def test_cree_le_superutilisateur_configure(self):
+        call_command("create_default_superuser")
+
+        admin = User.objects.get(username="admin")
+        self.assertTrue(admin.is_superuser)
+        self.assertTrue(admin.check_password("secure-test-password"))
+
+    @patch.dict(
+        os.environ,
+        {
+            "DJANGO_SUPERUSER_USERNAME": "admin",
+            "DJANGO_SUPERUSER_PASSWORD": "secure-test-password",
+        },
+    )
+    def test_ne_recree_pas_un_superutilisateur_existant(self):
+        User.objects.create_superuser(
+            username="admin",
+            email="",
+            password="existing-password",
+        )
+
+        call_command("create_default_superuser")
+
+        self.assertEqual(User.objects.filter(username="admin").count(), 1)
+
+    @patch.dict(
+        os.environ,
+        {
+            "DJANGO_SUPERUSER_USERNAME": "existing-user",
+            "DJANGO_SUPERUSER_PASSWORD": "secure-test-password",
+        },
+    )
+    def test_refuse_un_utilisateur_existant_non_admin(self):
+        User.objects.create_user(username="existing-user", password="ordinary-user")
+
+        with self.assertRaises(CommandError):
+            call_command("create_default_superuser")
