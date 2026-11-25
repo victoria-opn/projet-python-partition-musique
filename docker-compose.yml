@@ -13,7 +13,7 @@ services:
       timeout: 5s
       retries: 5
   web:
-    image: ghcr.io/victoria-opn/projet-python-partition-musique:latest
+    image: ghcr.io/m62k74dpqj-ctrl/projet-python-partition-musique:latest
     build:
       context: .
     environment:

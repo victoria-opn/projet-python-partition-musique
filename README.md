@@ -27,13 +27,13 @@ Après avoir installé Docker Desktop et créé un Personal Access Token GitHub 
 `write:packages`, connecte-toi puis construis et publie l'image :
 
 ```powershell
-docker login ghcr.io -u victoria-opn
+docker login ghcr.io -u m62k74dpqj-ctrl
 docker compose build web
 docker compose push web
 ```
 
 Docker demande le token comme mot de passe. L'image est publiée sous
-`ghcr.io/victoria-opn/projet-python-partition-musique:latest`. Pour publier une
+`ghcr.io/m62k74dpqj-ctrl/projet-python-partition-musique:latest`. Pour publier une
 version identifiée, modifie le tag `image` dans `docker-compose.yml` avant de
 construire et pousser.
 
