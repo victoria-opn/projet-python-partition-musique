@@ -22,13 +22,11 @@ from reconstitution_partition import (
     )
 
 from parametres import (
+    nom_fichier_audio,
     temps_par_mesure,
     cle,
     ref_rythme
 )
-
-
-
 
 
 def main_recup_notes(chemin_audio, tonalite):
@@ -97,5 +95,5 @@ def main_reconstitution_partition(info_notes_brutes, temps_forts, tonalite):
 
 
 if __name__ == "__main__":
-    chemin_pdf = main_recup_notes("audio/au_clair_de_la_lune_violon-2.wav", "c")
+    chemin_pdf = main_recup_notes(nom_fichier_audio, "d") #audio, tonalite cible
     print(chemin_pdf)

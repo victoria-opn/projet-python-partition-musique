@@ -1,12 +1,11 @@
 import numpy as np
 import scipy.io.wavfile as wav
 
-
+#bloc = tableau d'échantillon que je prends pour effectuer une ftt
 
 from parametres import (
-    duree_decoupe,
+    duree_decoupe, #fenêtre d'échantillonnage
     nombre_max_notes,
-    seuil_amplitude_relatif,
     seuil_amplitude_globale,
     duree_mesure_max,
     duree_mesure_min,
@@ -17,9 +16,11 @@ from parametres import (
 
 
 def lire_audio(fichier):
+    #récup freq d'échantillonnage du wav + valeurs du signal
     return wav.read(fichier)
 
 def decouper_signal(signal, frequence):
+    #Calcul la taille d'un bloc 
     taille_bloc = int(frequence * duree_decoupe)
     longueur_valide = len(signal) - (len(signal) % taille_bloc)
     return signal[:longueur_valide].reshape(-1, taille_bloc)
@@ -30,7 +31,7 @@ def extraire_frequences(signal, frequence):
     freqs = np.fft.fftfreq(len(signal), 1 / frequence)
     amplitudes = np.abs(tf)
 
-    # Filtrage des fréquences audibles
+    # Filtrage des fréquences audibles 20 à 20 000
     masque = (freqs > 20) & (freqs <= 20000)
     freqs = freqs[masque]
     amplitudes = amplitudes[masque]
@@ -45,18 +46,11 @@ def extraire_frequences(signal, frequence):
         if all(abs(freq - f) > seuil_distance for f, _ in couples_uniques):
             couples_uniques.append((freq, amp))
 
-    # Appliquer un seuil sur l'amplitude basé sur un pourcentage de l'amplitude max
-    if couples_uniques:
-        amplitude_max = max(a for _, a in couples_uniques)
-        seuil_amplitude = seuil_amplitude_relatif * amplitude_max
-        couples_filtrés = [(f, a) for f, a in couples_uniques if a >= seuil_amplitude]
-    else:
-        couples_filtrés = []
-
     # Retourner les notes les plus fortes (jusqu'à la limite définie)
-    return couples_filtrés[:nombre_max_notes]
+    return couples_uniques[:nombre_max_notes]
 
 def filtrer_amplitudes_globales(matrice_freqs):
+    #Compare chaque pic retenu (fort) au pic le plus fort du morceau
     # Extraire toutes les amplitudes du morceau
     toutes_amplitudes = [amp for ligne in matrice_freqs for _, amp in ligne]
     if not toutes_amplitudes:
@@ -75,6 +69,7 @@ def filtrer_amplitudes_globales(matrice_freqs):
     return matrice_filtrée
 
 def trouver_note(frequence):
+    #cherche freq la plus proche, renvoie nom et octave lilypond (4, "a")
     if frequence < 20 or frequence > 20000:
         return (-1, "rien")
 
@@ -108,6 +103,7 @@ def convertir_frequences_en_notes_avec_amplitude(matrice_freqs):
     return resultat
 
 def enlever_doublons(liste_notes):
+    #enlève les doublons à l'intérieur d'un même bloc
     resultat = []
     for accord in liste_notes:
         notes_presentes = []
@@ -122,6 +118,7 @@ def enlever_doublons(liste_notes):
     return resultat
 
 def coller_notes(liste_notes):
+    #transforme plusieurs blocs en 1 seul
     info_notes_brutes = []
     notes_en_cours = {}
 
@@ -159,6 +156,7 @@ def coller_notes(liste_notes):
 
 #### A revoir
 def temps_forts(info_notes_brutes):
+    #Hypothèse : chaque attaque est un début de mesure, repéré les répétition de ce schéma
     
     # On calcule la durée totale du morceau en prenant la plus grande valeur de fin de note
     temps_total = max(fin for _, _, fin, _ in info_notes_brutes)

@@ -1,15 +1,11 @@
 # Paramètres de traitement
-duree_decoupe = 0.1  # Durée d'une découpe (en secondes)
-nombre_max_notes = 1  # Nombre maximum de notes simultanées (on ne traite que la mélodie)
+duree_decoupe = 0.1  # Durée d'une découpe = d'un bloc = d'une fenettre (en secondes)
+nombre_max_notes = 1  # Ne garde qu'une freq par bloc (pour garder que la mélodie) /!/ Peut prendre harmonique au lieu de fondamentale
 decalage_octave_lilypond = 3
-seuil_amplitude_relatif = 0.5  # Seuil dynamique d'amplitude dans les petites portes (entre 0 et 1)
 seuil_amplitude_globale = 0.1  # Seuil global pour éliminer les notes faibles à l'échelle du morceau (entre 0 et 1)
 duree_mesure_max = 3 # en secondes
 duree_mesure_min = 0.8 # en secondes 
 coeff_collage = 7 # coeff collage des notes pour qu'elles durent plus longtemps
-seuil_alteration = 2
-tempo = 120
-tolerance_accord = 0 # duree pour laquelle on peut regrouper 2 notes en un accord
 temps_par_mesure = 4
 cle = "treble"    # cle de sol
 ref_rythme = 4   # noire et 8 pour la croche
@@ -21,7 +17,6 @@ nom_fichier = "au_clair_de_la_lune.ly"
 
 # Notes et fréquences
 notes_lilypond = ["c", "cis", "d", "dis", "e", "f", "fis", "g", "gis", "a", "ais", "b"]
-notes_nom_reel = ["do", "dod", "re", "red", "mi", "fa", "fad", "sol", "sold", "la", "lad", "si"]
 
 frequences_notes = [
     # Liste des fréquences pour chaque note par octave
