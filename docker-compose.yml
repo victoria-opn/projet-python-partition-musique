@@ -1,24 +1,36 @@
 services:
   db:
-    image: postgre-17
+    image: postgres:17
     environment:
       POSTGRES_DB: app
       POSTGRES_USER: app
-      POSTGRES_PASSWORD: password #A cahnger (juste pour l'exemple)
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-    test: ["CMD-SHELL", "pg_isready -U app"]
-    interval: 5s
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 5s
+      timeout: 5s
+      retries: 5
   web:
-    image: ghcr.io/mon_login/appli:latest #Pour l'exemple puis mettre le bon URI pour le registre
+    image: ghcr.io/m62k74dpqj-ctrl/projet-python-partition-musique:latest
+    build:
+      context: .
     environment:
-      DATABASE_HOST: db
-      DB_PASSWORD: password
-    ports:
-      - "8080:80"
+      ALLOWED_HOSTS: localhost,127.0.0.1
+      DJANGO_DEBUG: "0"
+      DJANGO_SECRET_KEY: "${DJANGO_SECRET_KEY}"
+      DJANGO_SUPERUSER_USERNAME: "${DJANGO_SUPERUSER_USERNAME}"
+      DJANGO_SUPERUSER_PASSWORD: "${DJANGO_SUPERUSER_PASSWORD}"
+      DB_HOST: db
+      DB_NAME: app
+      DB_USER: app
+      DB_PASSWORD: "${POSTGRES_PASSWORD}"
+      STATIC_ROOT: /static
+      MEDIA_ROOT: /media
     volumes:
-      - ./site:/usr/share/almalinux/html:ro  #read only
+      - static:/static
+      - media:/media
     depends_on:
       db:
         condition: service_healthy
@@ -36,7 +48,8 @@ services:
       start_period: 30s
   proxy:
     image: caddy:2-alpine
-    ports: ["8080:80"]  #le seul port ouvert
+    ports:
+      - "8080:80"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - static:/static:ro
