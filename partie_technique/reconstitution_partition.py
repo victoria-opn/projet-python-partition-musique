@@ -2,23 +2,10 @@ from pathlib import Path
 import subprocess
 
 from parametres import (
-    duree_decoupe,
-    nombre_max_notes,
     decalage_octave_lilypond,
-    seuil_amplitude_relatif,
-    seuil_amplitude_globale,
-    duree_mesure_max,
-    duree_mesure_min,
-    coeff_collage,
-    seuil_alteration,
-    tempo,
-    tolerance_accord,
     temps_par_mesure,
-    nom_fichier_audio,
     nom_fichier,
     notes_lilypond,
-    notes_nom_reel,
-    frequences_notes
 )
 
 
@@ -164,27 +151,6 @@ def decouper_en_mesures(notes, temps_forts):
     return mesures, duree_moyenne
 
 
-def regrouper_notes_accords0(mesure):
-    if not mesure:
-        return []
-
-    # Trie les notes par temps de début
-    mesure_ordonnee = sorted(mesure, key=lambda note: note[1])
-    groupes = []
-    groupe_actuel = [mesure_ordonnee[0]]
-
-    for note in mesure_ordonnee[1:]:
-        dernier_debut = groupe_actuel[0][1]
-        if abs(note[1] - dernier_debut) <= tolerance_accord:
-            groupe_actuel.append(note)
-        else:
-            groupes.append(groupe_actuel)
-            groupe_actuel = [note]
-
-    groupes.append(groupe_actuel)
-    return groupes
-
-
 #Retourne une liste d'accords : chaque accord est une paire (liste_de_notes, durée).
 def regrouper_notes_accords(mesure):
     
@@ -263,39 +229,6 @@ def octave_to_lilypond(octave):
     return suffixe
 
 #----------- Transposition
-
-# def transposer_note(note, tonalite_source, tonalite_cible):
-#     if note not in note_to_demiton:
-#         return note
-
-#     demiton_note = note_to_demiton[note]
-#     demiton_source = note_to_demiton.get(tonalite_source, 0)
-#     demiton_cible = note_to_demiton.get(tonalite_cible, 0)
-    
-#     decalage = (demiton_cible - demiton_source) % 12
-#     demiton_transpose = (demiton_note + decalage) % 12
-
-#     # Choix entre dièses et bémols selon la tonalité cible
-#     prefer_bemol = tonalite_cible in ["f", "bes", "ees", "aes", "des", "ges", "ces"]
-    
-#     # Ne pas perdre l'information d’altération : garder le plus proche enharmonique
-#     if prefer_bemol:
-#         return demiton_to_note_bemol[demiton_transpose]
-#     else:
-#         return demiton_to_note_diese[demiton_transpose]
-
-
-# def transposer_partition(info_notes_brutes, tonalite_source, tonalite_cible):
-    
-#     notes_transposees = []
-    
-#     for (octave, nom), debut, fin, amplitude in info_notes_brutes:
-#         note_t = transposer_note(nom, tonalite_source, tonalite_cible)
-#         notes_transposees.append(((octave, note_t), debut, fin, amplitude))
-        
-#     return notes_transposees
-    
-import re
 
 def transposer_note(note, tonalite_source, tonalite_cible):
     def transposer_simple_note(n):
@@ -378,8 +311,6 @@ def generer_lilypond(notes_mesures_accords, duree_mesure, cle, tonalite, temps_p
                 duree_silence = temps_courant
                 valeur_silence = convertir_duree_en_valeur_rythmique(duree_silence, duree_mesure)
                 mesure_ligne.append(f"r{valeur_silence}")
-        else:
-            temps_courant = mesure[0][1]
 
         for accord in mesure:
             debut = accord[1]
