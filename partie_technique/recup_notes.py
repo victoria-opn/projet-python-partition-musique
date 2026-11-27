@@ -68,6 +68,8 @@ def filtrer_amplitudes_globales(matrice_freqs):
 
     return matrice_filtrée
 
+
+
 def trouver_note(frequence):
     #cherche freq la plus proche, renvoie nom et octave lilypond (4, "a")
     if frequence < 20 or frequence > 20000:
@@ -80,9 +82,11 @@ def trouver_note(frequence):
 
     for i in range(1, 12):
         if frequences_notes[octave][i] >= frequence:
+
             note_avant = frequences_notes[octave][i - 1]
             note_apres = frequences_notes[octave][i]
             index = i - 1 if (frequence - note_avant) < (note_apres - frequence) else i
+
             return (octave, notes_lilypond[index])
 
     note_fin = frequences_notes[octave][11]
