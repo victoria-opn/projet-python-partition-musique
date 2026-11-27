@@ -27,7 +27,6 @@ from reconstitution_partition import (
     generer_lilypond,
     ecrire_lilypond,
     compiler_lilypond,
-    transformer_en_bemols
     )
 
 from parametres import (
@@ -57,9 +56,9 @@ import json
 
 
 
-def main_recup_notes():
+def main_recup_notes(chemin_audio, tonalite):
     
-    freq_ech, donnees = lire_audio(nom_fichier_audio)
+    freq_ech, donnees = lire_audio(chemin_audio)
     blocs = decouper_signal(donnees, freq_ech)
 
     print("Analyse des fréquences...")
@@ -86,12 +85,12 @@ def main_recup_notes():
     """with open("ma_liste.txt", "r") as f:
         info_notes_brutes = json.load(f)"""
     
-    main_reconstitution_partition(info_notes_brutes, tf)
+    return main_reconstitution_partition(info_notes_brutes, tf, tonalite) #renvoie le chmin pdf
 
 
-def main_reconstitution_partition(info_notes_brutes, temps_forts):
+def main_reconstitution_partition(info_notes_brutes, temps_forts, tonalite):
     
-    tonalite_input = input("Entrez la tonalité cible (ex: c, g, d, fis, bes...): ").strip().lower()
+    tonalite_input = tonalite.strip().lower()
     
     alterations = TrouverAlterations(info_notes_brutes)
     
@@ -136,9 +135,13 @@ def main_reconstitution_partition(info_notes_brutes, temps_forts):
     
     #code = generer_lilypond(notes_mesures_accords, duree_mesure, cle, tonalite, temps_par_mesure, ref_rythme)
     ecrire_lilypond(code) 
-    
-    compiler_lilypond()
+
+    return compiler_lilypond() #e chemin du PDF remonte jusqu’à generer_partition, puis est renvoyé au backend.
 
 
-main_recup_notes()
+if __name__ == "__main__":
+    chemin_pdf = main_recup_notes("audio/au_clair_de_la_lune_violon-2.wav", "c")
+    print(chemin_pdf)
 
+# Le backend pourra alors importer et appeler la fonction sans lancer le traitement tout seul :
+#chemin_pdf = generer_partition(chemin_audio, tonalite)

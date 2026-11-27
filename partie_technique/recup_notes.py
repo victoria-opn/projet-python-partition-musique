@@ -184,6 +184,8 @@ def convertir_en_noms_reels(tab_notes):
         resultat.append(res)
     return resultat
 
+
+#### A revoir
 def temps_forts(info_notes_brutes):
     
     # On calcule la durée totale du morceau en prenant la plus grande valeur de fin de note
