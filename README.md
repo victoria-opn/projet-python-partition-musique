@@ -9,10 +9,33 @@ Le détail du projet (besoin, fonctionnalités, répartition des tâches, planni
 ```bash
 git clone https://github.com/victoria-opn/projet-python-partition-musique.git
 cd projet-python-partition-musique
+cp .env.example .env
+# Renseigner les mots de passe et la clé secrète dans .env avant de continuer.
 docker compose up -d
 ```
 
+Sous Windows PowerShell, remplace `cp .env.example .env` par `Copy-Item .env.example .env`.
+Compose crée le superutilisateur Django à partir de `DJANGO_SUPERUSER_USERNAME` et
+`DJANGO_SUPERUSER_PASSWORD` dans `.env` ; si ce compte existe déjà, son mot de passe
+n'est pas modifié.
+
 Le site répond sur http://localhost:8080.
+
+### Publier l'image sur GitHub Container Registry
+
+Après avoir installé Docker Desktop et créé un Personal Access Token GitHub avec
+`write:packages`, connecte-toi puis construis et publie l'image :
+
+```powershell
+docker login ghcr.io -u m62k74dpqj-ctrl
+docker compose build web
+docker compose push web
+```
+
+Docker demande le token comme mot de passe. L'image est publiée sous
+`ghcr.io/m62k74dpqj-ctrl/projet-python-partition-musique:latest`. Pour publier une
+version identifiée, modifie le tag `image` dans `docker-compose.yml` avant de
+construire et pousser.
 
 > La conteneurisation est en cours : en attendant, le projet se lance en local (voir ci-dessous).
 
@@ -48,8 +71,7 @@ Crée un compte local avec la commande ci-dessus ; aucun compte n'est préconfig
 - [ ] Transcription réelle et téléchargement du PDF généré
 - [ ] Docker complet (PostgreSQL, Caddy, healthcheck, port 8080)
 - [x] Pages d'erreur 404 et 500 personnalisées
-- [ ] Compte admin automatique
-- [ ] Intégration continue (GitHub Actions)
+- [x] Compte admin automatique en Docker (identifiants configurés dans `.env`)
 
 ## Modèle de données
 
