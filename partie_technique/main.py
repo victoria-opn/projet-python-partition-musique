@@ -3,26 +3,18 @@ from recup_notes import (
     decouper_signal,
     extraire_frequences,
     filtrer_amplitudes_globales,
-    trouver_note,
     convertir_frequences_en_notes_avec_amplitude,
     enlever_doublons,
-    enlever_amplitude,
     coller_notes,
-    convertir_en_noms_reels,
     temps_forts
     )
 
 from reconstitution_partition import (
     transformer_en_bemols,
-    nombre_notes,
     TrouverAlterations,
     determiner_tonalite,
     decouper_en_mesures,
-    regrouper_notes_accords,
     regrouper_accord,
-    convertir_duree_en_valeur_rythmique,
-    lilypond_accord,
-    octave_to_lilypond,
     transposer_partition,
     generer_lilypond,
     ecrire_lilypond,
@@ -30,28 +22,11 @@ from reconstitution_partition import (
     )
 
 from parametres import (
-    duree_decoupe,
-    nombre_max_notes,
-    decalage_octave_lilypond,
-    seuil_amplitude_relatif,
-    seuil_amplitude_globale,
-    duree_mesure_max,
-    duree_mesure_min,
-    coeff_collage,
-    seuil_alteration,
-    tempo,
-    tolerance_accord,
     temps_par_mesure,
-    nom_fichier_audio,
-    nom_fichier,
-    notes_lilypond,
-    notes_nom_reel,
-    frequences_notes,
     cle,
     ref_rythme
 )
 
-import json
 
 
 
@@ -75,15 +50,7 @@ def main_recup_notes(chemin_audio, tonalite):
     
     
     tf = temps_forts(info_notes_brutes) 
-    
-    # print(f"\nInfo_notes_brutes : \n{info_notes_brutes}")
     print(f"\nTemps forts : \n{tf}")
-    
-    with open("inb_cc_6_note", "w") as f:
-        json.dump(info_notes_brutes, f)
-        
-    """with open("ma_liste.txt", "r") as f:
-        info_notes_brutes = json.load(f)"""
     
     return main_reconstitution_partition(info_notes_brutes, tf, tonalite) #renvoie le chmin pdf
 
@@ -121,27 +88,14 @@ def main_reconstitution_partition(info_notes_brutes, temps_forts, tonalite):
     
     #print(f"Mesures d'accords : \n{notes_mesures_accords}")
     
-    #---------Pas transposition
-    # tonalite = determiner_tonalite(alterations)
-    # print(f"\nTonalité : {tonalite}")
-    
-    # notes_mesures, duree_mesure = decouper_en_mesures(notes_armure, temps_forts)  # La premiere mesure n'a pas forcement de temps fort
-    # notes_mesures_accords = regrouper_accord(notes_mesures)  # mesures contenant des accords (accord = (liste des notes, duree))
-    
-    # print(f"Mesures d'accords : \n{notes_mesures_accords}")
-    
     # Finalement on prend pas en compte la premiere mesure, on commence par le premier temps fort
     code = generer_lilypond(notes_mesures_accords, duree_mesure, cle, tonalite_pour_lilypond, temps_par_mesure, ref_rythme)
     
-    #code = generer_lilypond(notes_mesures_accords, duree_mesure, cle, tonalite, temps_par_mesure, ref_rythme)
     ecrire_lilypond(code) 
 
-    return compiler_lilypond() #e chemin du PDF remonte jusqu’à generer_partition, puis est renvoyé au backend.
+    return compiler_lilypond()
 
 
 if __name__ == "__main__":
     chemin_pdf = main_recup_notes("audio/au_clair_de_la_lune_violon-2.wav", "c")
     print(chemin_pdf)
-
-# Le backend pourra alors importer et appeler la fonction sans lancer le traitement tout seul :
-#chemin_pdf = generer_partition(chemin_audio, tonalite)

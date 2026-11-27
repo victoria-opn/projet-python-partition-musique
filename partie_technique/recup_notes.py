@@ -6,20 +6,12 @@ import scipy.io.wavfile as wav
 from parametres import (
     duree_decoupe,
     nombre_max_notes,
-    decalage_octave_lilypond,
     seuil_amplitude_relatif,
     seuil_amplitude_globale,
     duree_mesure_max,
     duree_mesure_min,
     coeff_collage,
-    seuil_alteration,
-    tempo,
-    tolerance_accord,
-    temps_par_mesure,
-    nom_fichier_audio,
-    nom_fichier,
     notes_lilypond,
-    notes_nom_reel,
     frequences_notes
 )
 
@@ -129,18 +121,6 @@ def enlever_doublons(liste_notes):
         resultat.append(unique)
     return resultat
 
-def enlever_amplitude(liste_couple_notes):
-    resultat = []
-    for accord in liste_couple_notes:
-        nouveau_accord = []
-        if accord == []:
-            resultat.append(nouveau_accord) # cas pour un silence
-        else:
-            for note in accord:
-                nouveau_accord.append(note[0])
-            resultat.append(nouveau_accord)
-    return resultat
-    
 def coller_notes(liste_notes):
     info_notes_brutes = []
     notes_en_cours = {}
@@ -176,14 +156,6 @@ def coller_notes(liste_notes):
         info_notes_brutes.append((note, debut, fin_total, amp))
 
     return info_notes_brutes
-
-def convertir_en_noms_reels(tab_notes):
-    resultat = []
-    for accord in tab_notes:
-        res = [notes_nom_reel[notes_lilypond.index(note)] for _, note in accord if note in notes_lilypond]
-        resultat.append(res)
-    return resultat
-
 
 #### A revoir
 def temps_forts(info_notes_brutes):
